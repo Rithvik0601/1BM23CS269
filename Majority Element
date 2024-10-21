@@ -1,24 +1,27 @@
-https://leetcode.com/problems/majority-element/submissions/1423927158
+https://leetcode.com/problems/majority-element/submissions/1428995264
 
 int majorityElement(int* nums, int numsSize) {
-    int c = 0;
-    int count = 0;
-    for (int i = 0; i < numsSize; i++) {
-        if (count == 0) 
-        {
-            c = nums[i];
-            count = 1;
-        } 
-        else if (nums[i] == c) 
-        {
-            count++;
-        } 
-        else 
-        {
-            count--;
+    int ele;
+    int count;
+    for(int i = 0; i<numsSize; i++)
+    {
+        count = 0;
+        if(nums[i]==ele){
+        continue;
         }
+        ele = nums[i];
+        for(int j = 0;j<numsSize;j++)
+        {
+            if(nums[j]==ele)
+                count++;
+        }
+        if (count>(numsSize/2))
+        {
+            return ele;
+            break;
+        }
+            
     }
-
-    return c;
+    return ele;
 }
 
