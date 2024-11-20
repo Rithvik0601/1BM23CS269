@@ -1,0 +1,149 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void printList(struct Node* head) {
+    struct Node* temp = head;
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+void sortList(struct Node* head) {
+    struct Node *i, *j;
+    int temp;
+    if (head == NULL) return;
+
+    for (i = head; i != NULL; i = i->next) {
+        for (j = i->next; j != NULL; j = j->next) {
+            if (i->data > j->data) {
+                temp = i->data;
+                i->data = j->data;
+                j->data = temp;
+            }
+        }
+    }
+}
+
+void concatenateLists(struct Node** head1, struct Node* head2) {
+    if (*head1 == NULL) {
+        *head1 = head2;
+        return;
+    }
+    struct Node* temp = *head1;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+    temp->next = head2;
+}
+
+void reverseList(struct Node** head) {
+    struct Node *prev = NULL, *current = *head, *next = NULL;
+
+    while (current != NULL) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    *head = prev;
+}
+
+int main() {
+    struct Node* head1 = NULL;
+    struct Node* head2 = NULL;
+    int choice, data;
+    struct Node* temp;
+
+    while (1) {
+        printf("\nLinked List Operations:\n");
+        printf("1. Insert a node at the end\n");
+        printf("2. Sort the linked list\n");
+        printf("3. Concatenate two linked lists\n");
+        printf("4. Reverse the linked list\n");
+        printf("5. Print the linked list\n");
+        printf("6. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter data to insert at the end: ");
+                scanf("%d", &data);
+                temp = createNode(data);
+                if (head1 == NULL) {
+                    head1 = temp;
+                } else {
+                    struct Node* tempHead = head1;
+                    while (tempHead->next != NULL) {
+                        tempHead = tempHead->next;
+                    }
+                    tempHead->next = temp;
+                }
+                break;
+
+            case 2:
+                sortList(head1);
+                printf("Linked list sorted.\n");
+                break;
+
+            case 3:
+                printf("Enter data for second linked list:\n");
+                int more = 1;
+                while (more) {
+                    printf("Enter data: ");
+                    scanf("%d", &data);
+                    struct Node* temp2 = createNode(data);
+                    if (head2 == NULL) {
+                        head2 = temp2;
+                    } else {
+                        struct Node* tempHead2 = head2;
+                        while (tempHead2->next != NULL) {
+                            tempHead2 = tempHead2->next;
+                        }
+                        tempHead2->next = temp2;
+                    }
+                    printf("Enter 1 to add more nodes to the second list, 0 to stop: ");
+                    scanf("%d", &more);
+                }
+                concatenateLists(&head1, head2);
+                printf("Linked lists concatenated.\n");
+                break;
+
+            case 4:
+                reverseList(&head1);
+                printf("Linked list reversed.\n");
+                break;
+
+            case 5:
+                printf("Linked List: ");
+                printList(head1);
+                break;
+
+            case 6:
+                printf("Exiting...\n");
+                exit(0);
+                break;
+
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+
+    return 0;
+}
+
+
